@@ -4,7 +4,7 @@ const Post = require('../models/Post');
 const { authenticate, authorizeAdmin } = require('../middleware/auth');
 
 // GET all users
-router.get('/', async (req, res) => {
+router.get('/', authenticate, async (req, res) => {
   try {
     const users = await User.find().select('-__v');
     res.json(users);
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
 });
 
 // GET single user with their posts
-router.get('/:id', async (req, res) => {
+router.get('/:id', authenticate, async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select('-__v');
     if (!user) return res.status(404).json({ error: 'User not found' });

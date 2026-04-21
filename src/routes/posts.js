@@ -5,7 +5,7 @@ const User = require('../models/User');
 const { authenticate } = require('../middleware/auth');
 
 // GET all posts (with author info, optional tag filter)
-router.get('/', async (req, res) => {
+router.get('/', authenticate, async (req, res) => {
   try {
     const filter = {};
     if (req.query.tag) filter.tags = req.query.tag.toLowerCase();
@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
 });
 
 // GET single post with author and comments
-router.get('/:id', async (req, res) => {
+router.get('/:id', authenticate, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id)
       .populate('author', 'name email bio')

@@ -5,7 +5,7 @@ const User = require('../models/User');
 const { authenticate } = require('../middleware/auth');
 
 // GET all comments for a post
-router.get('/post/:postId', async (req, res) => {
+router.get('/post/:postId', authenticate, async (req, res) => {
   try {
     const comments = await Comment.find({ post: req.params.postId })
       .populate('author', 'name email')
@@ -18,7 +18,7 @@ router.get('/post/:postId', async (req, res) => {
 });
 
 // GET single comment
-router.get('/:id', async (req, res) => {
+router.get('/:id', authenticate, async (req, res) => {
   try {
     const comment = await Comment.findById(req.params.id)
       .populate('author', 'name email')
